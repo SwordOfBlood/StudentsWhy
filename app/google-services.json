@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "284980858080",
+    "firebase_url": "https://student-why-13170.firebaseio.com",
+    "project_id": "student-why-13170",
+    "storage_bucket": "student-why-13170.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284980858080:android:bc855fa2a7676e3c",
+        "android_client_info": {
+          "package_name": "com.example.studentswhy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284980858080-4d82rce86n2puhu5oserb0edm5vpkid7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEhTIPE1w2lDSN3ByI9u8rk2Liu2-umzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284980858080-4d82rce86n2puhu5oserb0edm5vpkid7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "284980858080-vabarm2b8sqdiu4ct7qgrj6sph0rpqhd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "-23.Student-why"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
