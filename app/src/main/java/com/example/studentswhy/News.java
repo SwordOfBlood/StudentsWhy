@@ -11,6 +11,7 @@ public class News
         this.hashTag = hashTag;
         this.answer = answer;
         this.title = title;
+        int likes = 1;
     }
 
     private UUID id;
