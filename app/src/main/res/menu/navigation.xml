@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_Schedule"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Schedule" />
+
+    <item
+        android:id="@+id/navigation_News"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="News" />
+    <item
+        android:id="@+id/navigation_UsefulInfo"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Useful Information" />
+
+    <item
+        android:id="@+id/navigation_TeachersList"
+        android:icon="@android:drawable/ic_lock_idle_alarm"
+        android:title="Teacher's List" />
+    <item
+        android:id="@+id/navigation_Subjectslist"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="Subject's List" />
+
+</menu>
