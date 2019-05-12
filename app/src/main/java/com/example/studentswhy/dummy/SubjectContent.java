@@ -25,29 +25,9 @@ public class SubjectContent {
      */
     public static final Map<String, Subject> ITEM_MAP = new HashMap<>();
 
-
-    static
-    {
-        addItem(new Subject("Алгоритмы и структуры данных",
-                "Ахметсафина Римма Закиевна",
-                "https://www.hse.ru/ba/se/courses/205508079.html",
-                "1",
-                "1-4 модуль 2 курс"));
-        addItem(new Subject("Конструирование программного обеспечения",
-                "Гринкруг Ефим Михайлович",
-                "https://www.hse.ru/ba/se/courses/205506564.html",
-                "2",
-                "1-4 модуль 2 курс"));
-        addItem(new Subject("Групповая динамика и коммуникации в профессиональной практике программной инженерии",
-                "Авдошин Сергей Михайлович",
-                "https://www.hse.ru/ba/se/courses/205516699.html",
-                "3",
-                "1-3 модуль 2 курс"));
-    }
-
-    private static void addItem(Subject item) {
+    public static void addItem(Subject item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.getStatus(), item);
+        ITEM_MAP.put(item.getName(), item);
     }
 
     private static DummyItem createDummyItem(int position) {

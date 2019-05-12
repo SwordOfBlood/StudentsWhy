@@ -38,22 +38,26 @@ public class Teacher
     {
         return rank;
     }
+    public void setRank(String rank){this.rank = rank;}
 
     private String place;
     public String getPlace()
     {
         return place;
     }
+    public void setPlace(String place){this.place = place;}
 
     private String number;
     public String getNumber()
     {
         return number;
     }
+    public void setNumber(String number){this.number = number;}
 
     private String email;
     public String getEmail()
     {
         return email;
     }
+    public void setEmail(String email){this.email = email;}
 }

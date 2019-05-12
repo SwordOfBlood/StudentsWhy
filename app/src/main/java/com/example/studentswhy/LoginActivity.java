@@ -27,7 +27,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.studentswhy.dummy.LessonContent;
+import com.example.studentswhy.dummy.SubjectContent;
+import com.example.studentswhy.dummy.TeacherContent;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -214,7 +221,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             ed.commit();
             showProgress(true);
             mAuthTask = new UserLoginTask(email);
-            loader(email);
+            loaderForLessons(email);
+            loaderForTeachers(email);
+            loaderForSubjects(email);
             Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
             startActivity(intent);
             finish();
@@ -222,7 +231,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void loader(String email) throws IOException {
+    private void loaderForLessons(String email) throws IOException {
         Callback<List<Lesson>> cb = new Callback<List<Lesson>>()
         {
             @Override
@@ -245,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 {
                     LessonContent.addItem(new Lesson(" "," ",
                             " ", " "," ",
-                            "You should be logged in as hse member"," "," "));
+                            "You should be logged in as HSE member"," "," "));
                 };
             }
 
@@ -305,6 +314,131 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         .getDataForTeachers(email,dateFormat.format(dateStart),dateFormat.format(dateEnd), "1")
                         .enqueue(cb);
             }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void loaderForTeachers(String email) throws IOException {
+        Callback<List<Lesson>> cb = new Callback<List<Lesson>>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<Lesson>> call, @NonNull Response<List<Lesson>> response)
+            {
+                try{
+                    for (int i = 0; i < response.body().size(); i++)
+                    {
+                        if (!TeacherContent.ITEM_MAP.containsKey(response.body().get(i).getLecturer()))
+                        {
+                            TeacherContent.addItem(new Teacher(response.body().get(i).getLecturer(),
+                                    response.body().get(i).getLecturer(),"",
+                                    "","",""));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    TeacherContent.addItem(new Teacher("","",
+                            "", "","",
+                            "You should be logged in as HSE member"));
+                };
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Lesson>> call, @NonNull Throwable t)
+            {
+                TeacherContent.addItem(new Teacher(" "," ",
+                        " ", " "," ",
+                        "You should be logged in as hse member"));
+            }
+        };
+        Date dateStart = new Date();
+        Date dateEnd = new Date();
+        if (dateStart.getMonth() < 6)
+        {
+            dateStart.setMonth(0);
+            dateEnd.setMonth(4);
+        }
+        else
+        {
+            dateStart.setMonth(8);
+            dateEnd.setMonth(11);
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+
+        if (email.contains("@edu"))
+        {
+            NetworkService.getInstance()
+                    .getJSONApi()
+                    .getDataForStudents(email,dateFormat.format(dateStart),dateFormat.format(dateEnd))
+                    .enqueue(cb);
+        }
+        else
+        {
+            NetworkService.getInstance()
+                    .getJSONApi()
+                    .getDataForTeachers(email,dateFormat.format(dateStart),dateFormat.format(dateEnd), "1")
+                    .enqueue(cb);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void loaderForSubjects(String email) throws IOException {
+        Callback<List<Lesson>> cb = new Callback<List<Lesson>>()
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<Lesson>> call, @NonNull Response<List<Lesson>> response)
+            {
+                try{
+                    for (int i = 0; i < response.body().size(); i++)
+                    {
+                        if (!SubjectContent.ITEM_MAP.containsKey(response.body().get(i).getDiscipline()))
+                            SubjectContent.addItem(new Subject(response.body().get(i).getDiscipline(),
+                                response.body().get(i).getLecturer(),Integer.toString(i),"",
+                                ""));
+                    }
+                }
+                catch (Exception e)
+                {
+                    SubjectContent.addItem(new Subject(" "," ",
+                            " ", " ",
+                            "You should be logged in as HSE member"));
+                };
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Lesson>> call, @NonNull Throwable t)
+            {
+                SubjectContent.addItem(new Subject(" "," ",
+                        " ", " ",
+                        "You should be logged in as hse member"));
+            }
+        };
+        Date dateStart = new Date();
+        Date dateEnd = new Date();
+        if (dateStart.getMonth() < 6)
+        {
+            dateStart.setMonth(0);
+            dateEnd.setMonth(4);
+        }
+        else
+        {
+            dateStart.setMonth(8);
+            dateEnd.setMonth(11);
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+        if (email.contains("@edu"))
+        {
+            NetworkService.getInstance()
+                    .getJSONApi()
+                    .getDataForStudents(email,dateFormat.format(dateStart),dateFormat.format(dateEnd))
+                    .enqueue(cb);
+        }
+        else
+        {
+            NetworkService.getInstance()
+                    .getJSONApi()
+                    .getDataForTeachers(email,dateFormat.format(dateStart),dateFormat.format(dateEnd), "1")
+                    .enqueue(cb);
+        }
     }
 
     private boolean isEmailValid(String email)

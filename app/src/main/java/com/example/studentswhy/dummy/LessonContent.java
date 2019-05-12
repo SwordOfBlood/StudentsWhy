@@ -25,30 +25,8 @@ public class LessonContent {
      */
     public static final Map<String, Lesson> ITEM_MAP = new HashMap<String, Lesson>();
 
-    public static void addItem(Lesson item)
-    {
+    public static void addItem(Lesson item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.getId().toString(), item);
-    }
-
-    /**
-     * A Lesson item representing a piece of content.
-     */
-    public static class LessonItem
-    {
-        public final String id;
-        public final String content;
-        public final String details;
-
-        public LessonItem(String id, String content, String details) {
-            this.id = id;
-            this.content = content;
-            this.details = details;
-        }
-
-        @Override
-        public String toString() {
-            return content;
-        }
     }
 }
