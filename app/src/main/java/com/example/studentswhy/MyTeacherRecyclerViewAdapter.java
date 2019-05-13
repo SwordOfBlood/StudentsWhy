@@ -43,7 +43,6 @@ public class MyTeacherRecyclerViewAdapter extends RecyclerView.Adapter<MyTeacher
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getName()+"\n"+
-                mValues.get(position).getRank()+
                 "\n"+mValues.get(position).getEmail()+
                 "\n"+mValues.get(position).getNumber()+
                 "\n"+mValues.get(position).getPlace());

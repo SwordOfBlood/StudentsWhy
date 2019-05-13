@@ -38,7 +38,6 @@ public class MySubjectRecyclerViewAdapter extends RecyclerView.Adapter<MySubject
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getStatus());
         holder.mContentView.setText(mValues.get(position).getName()+
-                "\n"+mValues.get(position).getUrl()+
                 "\n"+mValues.get(position).getTeacher()+
                 "\n"+mValues.get(position).getTime());
 

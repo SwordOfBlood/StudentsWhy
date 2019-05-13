@@ -21,11 +21,13 @@ import android.widget.Toast;
 import com.example.studentswhy.dummy.FAQContent;
 import com.example.studentswhy.dummy.LessonContent;
 import com.example.studentswhy.dummy.TeacherContent;
+import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,9 +53,8 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
     private TeacherFragment teacherFragment = new TeacherFragment();
     private LessonFragment lessonFragment = new LessonFragment();
 
-    String sharedData="";
-    List<String> searchLinks = new ArrayList<>();
     int counter = 0;
+    boolean alloweder = true;
     public class NewThread extends AsyncTask<String, Void, String>
     {
         // благодоря этому классу мы будет разбирать данные на куски
@@ -70,22 +71,41 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                 doc = Jsoup.connect(arg[0]).get();
                 // задаем с какого места
                 title = doc.select(".l-extra.small").first();
-
-                sharedData = title.text();
+                if(title != null)
+                   TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
+                           setNumber(title.text().replace(',',' '));
+                if (!doc.select(".l-extra.small").isEmpty())
+                title = doc.select(".l-extra.small").last();
+                if(title != null)
+                    TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
+                            setEmail(title.child(2).attr("data-at")
+                                    .replaceAll("-at-","@")
+                                    .replace("\"","")
+                                    .replace("[","")
+                                    .replace("]","")
+                                    .replace(",",""));
+                title = doc.select(".content__inner.content__inner_foot1").first();
+                if(title != null)
+                {
+                    TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
+                            setName(title.text());
+                    TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
+                            setPlace(title.getElementsByTag("a").attr("abs:href"));
+                }
+                alloweder = true;
 
             } catch (IOException e)
             {
-                e.printStackTrace();
+
             }
             // ничего не возвращаем потому что я так захотел)
             return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result)
+        {
 
-            // после запроса обновляем листвью
-            sharedData = sharedData+"";
         }
     }
 
@@ -118,8 +138,10 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                     transaction.commit();
                     return true;
                 case R.id.navigation_TeachersList:
-                    if (TeacherContent.ITEMS.get(0).getNumber().equals("")){
-                        for(int i = 0; i<TeacherContent.ITEMS.size();i++)
+                    counter++;
+                    if (TeacherContent.ITEMS.get(0).getNumber().equals(""))
+                    {
+                        for(int i = 0; i<TeacherContent.ITEMS.size()-1;i++)
                         {
                             String[] FIO = TeacherContent.ITEMS.get(i).getName().split(" ");
                             String searchLink = "https://www.hse.ru/org/persons/?search_person=";
@@ -127,13 +149,11 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                             {
                                 searchLink+="+"+FIO[j];
                             }
-                            searchLinks.add(searchLink);
-                        }
-                        if(counter<searchLinks.size() && TeacherContent.ITEMS.get(counter).getNumber().equals(""))
-                        {
-                            new NewThread().execute(searchLinks.get(counter));
-                            TeacherContent.ITEMS.get(counter).setNumber(sharedData);
-                            counter++;
+                            do {
+                               TeacherContent.ITEMS.get(i).getEmail();
+                            } while(!alloweder);
+                            alloweder = false;
+                            new NewThread().execute(searchLink, Integer.toString(i));
                         }
                     }
                     transaction.replace(R.id.homepage, teacherFragment);
