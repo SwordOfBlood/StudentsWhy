@@ -223,7 +223,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = new UserLoginTask(email);
             loaderForLessons(email);
             loaderForTeachers(email);
-            loaderForSubjects(email);
             Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
             startActivity(intent);
             finish();
@@ -332,6 +331,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     response.body().get(i).getLecturer(),"",
                                     "","",""));
                         }
+                        if (!SubjectContent.ITEM_MAP.containsKey(response.body().get(i).getDiscipline()))
+                            SubjectContent.addItem(new Subject(response.body().get(i).getDiscipline(),
+                                    response.body().get(i).getLecturer(),Integer.toString(i),"",
+                                    ""));
                     }
                 }
                 catch (Exception e)
@@ -354,8 +357,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Date dateEnd = new Date();
         if (dateStart.getMonth() < 6)
         {
-            dateStart.setMonth(0);
-            dateEnd.setMonth(4);
+            dateStart.setMonth(1);
+            dateEnd.setMonth(3);
         }
         else
         {
@@ -364,67 +367,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
 
-        if (email.contains("@edu"))
-        {
-            NetworkService.getInstance()
-                    .getJSONApi()
-                    .getDataForStudents(email,dateFormat.format(dateStart),dateFormat.format(dateEnd))
-                    .enqueue(cb);
-        }
-        else
-        {
-            NetworkService.getInstance()
-                    .getJSONApi()
-                    .getDataForTeachers(email,dateFormat.format(dateStart),dateFormat.format(dateEnd), "1")
-                    .enqueue(cb);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void loaderForSubjects(String email) throws IOException {
-        Callback<List<Lesson>> cb = new Callback<List<Lesson>>()
-        {
-            @Override
-            public void onResponse(@NonNull Call<List<Lesson>> call, @NonNull Response<List<Lesson>> response)
-            {
-                try{
-                    for (int i = 0; i < response.body().size(); i++)
-                    {
-                        if (!SubjectContent.ITEM_MAP.containsKey(response.body().get(i).getDiscipline()))
-                            SubjectContent.addItem(new Subject(response.body().get(i).getDiscipline(),
-                                response.body().get(i).getLecturer(),Integer.toString(i),"",
-                                ""));
-                    }
-                }
-                catch (Exception e)
-                {
-                    SubjectContent.addItem(new Subject(" "," ",
-                            " ", " ",
-                            "You should be logged in as HSE member"));
-                };
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Lesson>> call, @NonNull Throwable t)
-            {
-                SubjectContent.addItem(new Subject(" "," ",
-                        " ", " ",
-                        "You should be logged in as hse member"));
-            }
-        };
-        Date dateStart = new Date();
-        Date dateEnd = new Date();
-        if (dateStart.getMonth() < 6)
-        {
-            dateStart.setMonth(0);
-            dateEnd.setMonth(4);
-        }
-        else
-        {
-            dateStart.setMonth(8);
-            dateEnd.setMonth(11);
-        }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
         if (email.contains("@edu"))
         {
             NetworkService.getInstance()

@@ -70,7 +70,8 @@ public class FAQContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class DummyItem
+    {
         public final String id;
         public final String content;
         public final String details;

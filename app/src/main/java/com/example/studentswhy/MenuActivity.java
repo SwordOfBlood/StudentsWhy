@@ -139,9 +139,9 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                     return true;
                 case R.id.navigation_TeachersList:
                     counter++;
-                    if (TeacherContent.ITEMS.get(0).getNumber().equals(""))
+                    if (TeacherContent.ITEMS.size() != 0 && TeacherContent.ITEMS.get(0).getNumber().equals(""))
                     {
-                        for(int i = 0; i<TeacherContent.ITEMS.size()-1;i++)
+                        for(int i = 0; i<TeacherContent.ITEMS.size();i++)
                         {
                             String[] FIO = TeacherContent.ITEMS.get(i).getName().split(" ");
                             String searchLink = "https://www.hse.ru/org/persons/?search_person=";
