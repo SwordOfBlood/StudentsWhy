@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -33,6 +34,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'org.jsoup:jsoup:1.8.1'
     //Конвертер JSON, можно, если предпочитаете, использовать Jackson
+    implementation 'com.google.firebase:firebase-database:16.0.4'
     testImplementation 'junit:junit:4.12'
     apply plugin: 'com.google.gms.google-services'
 }

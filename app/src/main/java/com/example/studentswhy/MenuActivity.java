@@ -20,9 +20,15 @@ import android.widget.Toast;
 
 import com.example.studentswhy.dummy.FAQContent;
 import com.example.studentswhy.dummy.LessonContent;
+import com.example.studentswhy.dummy.NewsContent;
 import com.example.studentswhy.dummy.TeacherContent;
 import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,6 +58,7 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
     private SubjectFragment subjectFragment = new SubjectFragment();
     private TeacherFragment teacherFragment = new TeacherFragment();
     private LessonFragment lessonFragment = new LessonFragment();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     int counter = 0;
     boolean alloweder = true;
@@ -126,10 +133,56 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                     transaction.commit();
                     return true;
                 case R.id.navigation_News:
+                    DatabaseReference myRef = database.getReference("News");
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+                            if (dataSnapshot.getChildrenCount() > NewsContent.ITEMS.size())
+                            for (int i = 0; i < dataSnapshot.getChildrenCount(); i++)
+                            {
+                                NewsContent.addItem(new News(dataSnapshot.child(Integer.toString(i+1)+"/Date").getValue().toString(),
+                                        dataSnapshot.child(Integer.toString(i+1)+"/Header").getValue().toString(),
+                                        dataSnapshot.child(Integer.toString(i+1)+"/Body").getValue().toString(),
+                                        Integer.parseInt(dataSnapshot.child(Integer.toString(i+1)+"/Likes").getValue().toString()),
+                                        Integer.toString(i+1)));
+                            }
+                            else
+                                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++)
+                                {
+                                    NewsContent.ITEMS.get(i).setLikes(Integer.parseInt(dataSnapshot.child(Integer.toString(i+1)+"/Likes").getValue().toString()));
+                                }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
                     transaction.replace(R.id.homepage, newsFragment);
                     transaction.commit();
                     return true;
                 case R.id.navigation_UsefulInfo:
+                    DatabaseReference myRef1 = database.getReference("Info");
+                    myRef1.addValueEventListener(new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+                            for (int i = 0; i < FAQContent.ITEMS.size(); i++)
+                            {
+                                if(FAQContent.ITEMS.get(i).details != 0)
+                                    FAQContent.ITEMS.get(i).setAnswer(dataSnapshot.child(Integer.toString(FAQContent.ITEMS.get(i).details)).getValue().toString());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
                     transaction.replace(R.id.homepage, faqFragment);
                     transaction.commit();
                     return true;

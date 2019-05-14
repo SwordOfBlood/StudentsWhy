@@ -5,14 +5,22 @@ import java.util.UUID;
 
 public class News
 {
-    public News(String hashTag, String title, String answer )
+    public News(String date, String title, String answer, int likes, String hashtag)
     {
         id = UUID.randomUUID();
-        this.hashTag = hashTag;
+        this.date = date;
         this.answer = answer;
         this.title = title;
-        int likes = 1;
+        this.likes = likes;
+        this.hashtag = hashtag;
     }
+
+    private String hashtag;
+    public String getHashtag() {return hashtag;}
+
+    private int likes;
+    public int getLikes() {return likes;}
+    public void setLikes(int likes) {this.likes = likes;}
 
     private UUID id;
     public UUID getId()
@@ -20,10 +28,10 @@ public class News
         return id;
     }
 
-    private String hashTag;
-    public String getHashTag()
+    private String date;
+    public String getDate()
     {
-        return hashTag;
+        return date;
     }
 
     private String title;

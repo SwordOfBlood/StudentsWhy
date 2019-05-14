@@ -2,6 +2,7 @@ package com.example.studentswhy;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,25 +45,14 @@ public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecycler
         holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                    NewsContent.searchItems.clear();
-                    for (int i = 0; i < NewsContent.AllItems.size(); i++)
-                    {
-                        if (NewsContent.AllItems.get(i).getHashTag().equals(mValues.get(position).content))
-                        {
-                            NewsContent.searchItems.add(NewsContent.AllItems.get(i));
-                        }
-                    }
-                    if (NewsContent.searchItems.size() != 0)
-                    {
-                        NewsContent.ITEMS.clear();
-                        NewsContent.ITEMS.addAll(NewsContent.searchItems);
-                    }
+            public void onClick(View v)
+            {
+
+                if (mValues.get(position).details!=0)
+                {
+                    holder.mContentView.setText(mValues.get(position).content +"\n" + mValues.get(position).getAnswer());
                 }
             }
         });

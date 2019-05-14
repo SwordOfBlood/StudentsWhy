@@ -2,6 +2,7 @@ package com.example.studentswhy;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.studentswhy.NewsFragment.OnListFragmentInteractionListener;
 import com.example.studentswhy.dummy.NewsContent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -34,14 +37,16 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText("");
 
-        holder.mContentView.setText(mValues.get(position).getHashTag()+ "\n" +
-                mValues.get(position).getTitle()+ "\n" +
-                mValues.get(position).getAnswer());
+        holder.mContentView.setText(mValues.get(position).getDate()+ "\n" +
+                mValues.get(position).getTitle()+ "\n\n" +
+                mValues.get(position).getAnswer()+"\n"+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLikes: "+
+                mValues.get(position).getLikes());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +56,12 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-                    NewsContent.ITEMS.clear();
-                    NewsContent.ITEMS.addAll(NewsContent.AllItems);
+                    mValues.get(position).setLikes(mValues.get(position).getLikes()+1);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("News/"+
+                            mValues.get(position).getHashtag()+"/Likes");
+
+                    myRef.setValue(mValues.get(position).getLikes());
                 }
             }
         });
