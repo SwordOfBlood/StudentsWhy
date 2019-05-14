@@ -36,10 +36,9 @@ public class MySubjectRecyclerViewAdapter extends RecyclerView.Adapter<MySubject
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getStatus());
+        holder.mIdView.setText("");
         holder.mContentView.setText(mValues.get(position).getName()+
-                "\n"+mValues.get(position).getTeacher()+
-                "\n"+mValues.get(position).getTime());
+                "\n"+mValues.get(position).getTeacher());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

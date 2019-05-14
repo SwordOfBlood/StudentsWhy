@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>description</key>
+		<string></string>
+		<key>pid</key>
+		<string>0</string>
+		<key>name</key>
+		<string>Вопросы по поступлению </string>
+		<key>id</key>
+		<string>1</string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>3</string>
+		<key>name</key>
+		<string>Перед подачей документов</string>
+		<key>pid</key>
+		<string>1</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>6</string>
+		<key>name</key>
+		<string>С чего начать поступление в Вышку?</string>
+		<key>pid</key>
+		<string>3</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>7</string>
+		<key>name</key>
+		<string>В Вышке есть бюджетные места?</string>
+		<key>pid</key>
+		<string>3</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>2</string>
+		<key>name</key>
+		<string>Подача документов</string>
+		<key>pid</key>
+		<string>1</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>4</string>
+		<key>name</key>
+		<string>В какие сроки мне нужно подать документы?</string>
+		<key>pid</key>
+		<string>2</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>5</string>
+		<key>name</key>
+		<string>Как подать документы?</string>
+		<key>pid</key>
+		<string>2</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>8</string>
+		<key>name</key>
+		<string>Конкурс</string>
+		<key>pid</key>
+		<string>1</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>10</string>
+		<key>name</key>
+		<string>Сколько мне нужно баллов?</string>
+		<key>pid</key>
+		<string>8</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>12</string>
+		<key>name</key>
+		<string>Сколько лет действует олимпиада?</string>
+		<key>pid</key>
+		<string>8</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>13</string>
+		<key>name</key>
+		<string>Какие документы нужно принести в приёмную комиссию, если я поступаю по олимпиаде?</string>
+		<key>pid</key>
+		<string>8</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>14</string>
+		<key>name</key>
+		<string>У меня есть две льготы в 100 баллов ЕГЭ. Могу ли я претендовать на каждую из них?</string>
+		<key>pid</key>
+		<string>8</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>15</string>
+		<key>name</key>
+		<string>У меня есть две льготы БВИ. Могу ли я претендовать на каждую из них?</string>
+		<key>pid</key>
+		<string>8</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>16</string>
+		<key>name</key>
+		<string>5 Мифов о Вышке</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>17</string>
+		<key>name</key>
+		<string>Миф № 1. Учат только экономике?</string>
+		<key>pid</key>
+		<string>16</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>18</string>
+		<key>name</key>
+		<string>Миф № 2: В этом университете учатся преимущественно москвичи?</string>
+		<key>pid</key>
+		<string>16</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>19</string>
+		<key>name</key>
+		<string>Миф № 3. Это платный вуз?</string>
+		<key>pid</key>
+		<string>16</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>20</string>
+		<key>name</key>
+		<string>Миф № 4. Вышка — это только дополнительное образование?</string>
+		<key>pid</key>
+		<string>16</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>21</string>
+		<key>name</key>
+		<string>Миф № 5. В Вышке одни «мажоры»?</string>
+		<key>pid</key>
+		<string>16</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>22</string>
+		<key>name</key>
+		<string>Скидки на обучение</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>23</string>
+		<key>name</key>
+		<string>Кто может рассчитывать на скидку в бакалавриате?</string>
+		<key>pid</key>
+		<string>22</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>24</string>
+		<key>name</key>
+		<string>Я выпускник лицея НИУ ВШЭ, полагается ли мне скидка?</string>
+		<key>pid</key>
+		<string>22</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>25</string>
+		<key>name</key>
+		<string>Общежития НИУ ВШЭ</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>26</string>
+		<key>name</key>
+		<string>Кому предоставляется общежития?</string>
+		<key>pid</key>
+		<string>25</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>27</string>
+		<key>name</key>
+		<string>Что такое &quot;Трилистник&quot;?</string>
+		<key>pid</key>
+		<string>25</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>28</string>
+		<key>name</key>
+		<string>Что такое &quot;Дубки&quot;?</string>
+		<key>pid</key>
+		<string>25</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>29</string>
+		<key>name</key>
+		<string>Что такое &quot;Шестерка&quot;?</string>
+		<key>pid</key>
+		<string>25</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>30</string>
+		<key>name</key>
+		<string>Что такое &quot;ЛМС&quot;?</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>31</string>
+		<key>name</key>
+		<string>Как поучиться в иностранном вузе по обмену?</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>32</string>
+		<key>name</key>
+		<string>Как выучить дополнительный иностранный язык?</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>33</string>
+		<key>name</key>
+		<string>Спорт</string>
+		<key>pid</key>
+		<string>0</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>34</string>
+		<key>name</key>
+		<string>В вышке есть спорт. секции?</string>
+		<key>pid</key>
+		<string>33</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>id</key>
+		<string>35</string>
+		<key>name</key>
+		<string>Что такое ССК?</string>
+		<key>pid</key>
+		<string>33</string>
+		<key>description</key>
+		<string></string>
+	</dict>
+</array>
+</plist>
