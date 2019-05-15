@@ -3,6 +3,7 @@ package com.example.studentswhy;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,7 +58,7 @@ public class FAQFragment extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_faq_list, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.fragment_faq_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -70,6 +71,8 @@ public class FAQFragment extends android.app.Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new MyFAQRecyclerViewAdapter(FAQContent.ITEMS, mListener));
+            RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+            recyclerView.setItemAnimator(itemAnimator);
         }
         return view;
     }

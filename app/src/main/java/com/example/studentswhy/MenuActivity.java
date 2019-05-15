@@ -174,7 +174,11 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                             for (int i = 0; i < FAQContent.ITEMS.size(); i++)
                             {
                                 if(FAQContent.ITEMS.get(i).details != 0)
-                                    FAQContent.ITEMS.get(i).setAnswer(dataSnapshot.child(Integer.toString(FAQContent.ITEMS.get(i).details)).getValue().toString());
+                                    FAQContent.ITEMS.get(i).setValueText(
+                                            FAQContent.ITEMS.get(i).getValueText()+"\n"+
+                                            dataSnapshot.child(Integer.toString
+                                                    (FAQContent.ITEMS.get(i).details))
+                                                    .getValue().toString());
                             }
                         }
 
@@ -241,7 +245,39 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
-
+        FAQContent.addItem(new FAQContent.DummyItem("1","#Вопросы по поступлению ", 0, 0, 1));
+        FAQContent.addItem(new FAQContent.DummyItem("\t1.1", "#Перед подачей документов", 0,1,2));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.1.1", "С чего начать поступление в Вышку?",6,2, 10));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.1.2", "В Вышке есть бюджетные места?", 7,2, 11));
+        FAQContent.addItem(new FAQContent.DummyItem("\t1.2", "#Подача документов", 0,1, 3));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.2.1", "В какие сроки мне нужно подать документы?", 4,3, 12));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.2.2", "Как подать документы?", 5,3, 13));
+        FAQContent.addItem(new FAQContent.DummyItem("\t1.3", "#Конкурс", 0,1, 4));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.3.1", "Сколько мне нужно баллов?", 10,4, 14));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.3.2", "Сколько лет действует олимпиада?", 12,4, 15));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.3.3", "Какие документы нужно принести в приёмную комиссию, если я поступаю по олимпиаде?", 13,4, 16));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.3.4", "У меня есть две льготы в 100 баллов ЕГЭ. Могу ли я претендовать на каждую из них?", 14,4, 17));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t1.3.5", "У меня есть две льготы БВИ. Могу ли я претендовать на каждую из них?", 15,4, 18));
+        FAQContent.addItem(new FAQContent.DummyItem("2", "#5 Мифов о Вышке", 0,0, 5));
+        FAQContent.addItem(new FAQContent.DummyItem("\t2.1", "Миф № 1. Учат только экономике?", 17,5, 19));
+        FAQContent.addItem(new FAQContent.DummyItem("\t2.2", "Миф № 2: В этом университете учатся преимущественно москвичи?", 18,5, 20));
+        FAQContent.addItem(new FAQContent.DummyItem("\t2.3", "Миф № 3. Это платный вуз?", 19,5, 21));
+        FAQContent.addItem(new FAQContent.DummyItem("\t2.4", "Миф № 4. Вышка — это только дополнительное образование?", 20,5, 22));
+        FAQContent.addItem(new FAQContent.DummyItem("\t2.4", "Миф № 5. В Вышке одни «мажоры»?", 21,5, 23));
+        FAQContent.addItem(new FAQContent.DummyItem("3", "#Скидки на обучение", 0,0, 6));
+        FAQContent.addItem(new FAQContent.DummyItem("\t3.1", "Кто может рассчитывать на скидку в бакалавриате?", 23,6, 24));
+        FAQContent.addItem(new FAQContent.DummyItem("\t3.2", "Я выпускник лицея НИУ ВШЭ, полагается ли мне скидка?", 24,6, 25));
+        FAQContent.addItem(new FAQContent.DummyItem("4", "#Общежития НИУ ВШЭ", 0,0, 7));
+        FAQContent.addItem(new FAQContent.DummyItem("\t4.1", "Кому предоставляется общежития?", 26,7, 26));
+        FAQContent.addItem(new FAQContent.DummyItem("\t4.2", "Что такое Трилистник?", 27,7, 27));
+        FAQContent.addItem(new FAQContent.DummyItem("\t4.3", "Что такое Дубки?", 28,7, 28));
+        FAQContent.addItem(new FAQContent.DummyItem("\t4.4", "Что такое Шестерка?", 29,7, 29));
+        FAQContent.addItem(new FAQContent.DummyItem("5", "Что такое ЛМС?", 30,0, 30));
+        FAQContent.addItem(new FAQContent.DummyItem("6", "Как поучиться в иностранном вузе по обмену?", 31,0, 31));
+        FAQContent.addItem(new FAQContent.DummyItem("7", "Как выучить дополнительный иностранный язык?", 32,0, 32));
+        FAQContent.addItem(new FAQContent.DummyItem("8", "#Спорт", 0,0, 8));
+        FAQContent.addItem(new FAQContent.DummyItem("\t8.1", "В вышке есть спорт. секции?", 34,8, 9));
+        FAQContent.addItem(new FAQContent.DummyItem("\t\t8.1.1", "Что такое ССК?", 35,9, 33));
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.homepage, lessonFragment);
         transaction.commit();

@@ -1,16 +1,21 @@
 package com.example.studentswhy;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.studentswhy.FAQFragment.OnListFragmentInteractionListener;
+import com.example.studentswhy.dummy.FAQContent;
 import com.example.studentswhy.dummy.FAQContent.DummyItem;
-import com.example.studentswhy.dummy.NewsContent;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Random;
@@ -22,63 +27,116 @@ import java.util.Random;
  */
 public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private View vv;
+    private List<DummyItem> allRecords; //список всех данных
     private final OnListFragmentInteractionListener mListener;
 
-    public MyFAQRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyFAQRecyclerViewAdapter(List<DummyItem> records, OnListFragmentInteractionListener listener) {
+        allRecords = records;
         mListener = listener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_faq, parent, false);
-        return new ViewHolder(view);
+    public MyFAQRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_faq, viewGroup, false);
+        return new MyFAQRecyclerViewAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = mValues.get(position);
-        Random random = new Random();
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+    public void onBindViewHolder(final MyFAQRecyclerViewAdapter.ViewHolder viewHolder, int i) {
+        DummyItem record = allRecords.get(i);
+        String value = record.getValueText();
+        int id = record.valueId;
+        int parentId = record.getParentId();
+        final int position = i;
+        final String text = "#" + id + ": " + value + " (id родительского элемента: " + parentId + ")";
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
+        //покажем или скроем элемент, если он дочерний
+        if (parentId > 0) {
+            //видимость делаем по параметру родительского элемента
+            setVisibility(viewHolder.item, allRecords.get(parentId).isChildVisibility(), parentId);
+        }
+        else { //элемент не дочерний, показываем его
+            setVisibility(viewHolder.item, true, parentId);
+        }
+
+        //покажем или скроем иконку деревовидного списка
+        if (record.isItemParent()) {
+            viewHolder.iconTree.setVisibility(View.VISIBLE);
+            //показываем нужную иконку
+            if (record.isChildVisibility()) //показываются дочерние элементы
+                viewHolder.iconTree.setBackgroundResource(R.drawable.icon_hide);
+            else //скрыты дочерние элементы
+                viewHolder.iconTree.setBackgroundResource(R.drawable.icon_show);
+        }
+        else //элемент не родительский
+            viewHolder.iconTree.setVisibility(View.GONE);
+
+        //устанавливаем текст элемента
+        if (!TextUtils.isEmpty(value)) {
+            viewHolder.valueText.setText(value);
+        }
+
+        //добавляем обработку нажатий по значению
+        viewHolder.valueText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-
-                if (mValues.get(position).details!=0)
+            public void onClick(View view) {
+                DummyItem dataItem = allRecords.get(position);
+                for(int j = 0; j < FAQContent.ITEMS.size();j++)
                 {
-                    holder.mContentView.setText(mValues.get(position).content +"\n" + mValues.get(position).getAnswer());
+                    if (FAQContent.ITEMS.get(j).getParentId() == dataItem.valueId)
+                        FAQContent.ITEMS.get(j).setChildVisibility();
+                }
+                if (dataItem.isItemParent()) { //нажали по родительскому элементу, меняем видимость дочерних элементов
+                    dataItem.setChildVisibility();
+                    notifyDataSetChanged();
+                }
+                else { //нажали по обычному элементу, обрабатываем как нужно
+                    Snackbar snackbar = Snackbar.make(vv, text, Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return mValues.size();
+    //установка видимости элемента
+    private void setVisibility(View curV,  boolean visible, int parentId) {
+        //найдем блок, благодаря которому будем сдвигать текст
+        LinearLayout vPadding = curV.findViewById(R.id.block_text);
+
+        LinearLayout.LayoutParams params;
+        if (visible) {
+            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (vPadding != null) {
+                if (parentId >= 0) { //это дочерний элемент, делаем отступ
+                    vPadding.setPadding(80, 0, 0, 0);
+                }
+                else {
+                    vPadding.setPadding(0, 0, 0, 0);
+                }
+            }
+        }
+        else
+            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        curV.setLayoutParams(params);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    @Override
+    public int getItemCount() {
+        return allRecords.size();
+    }
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout item;
+        private TextView valueText;
+        private ImageView iconTree;
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public ViewHolder(View itemView) {
+            super(itemView);
+            vv = itemView;
+            item = vv.findViewById(R.id.item);
+            valueText = vv.findViewById(R.id.value_name);
+            iconTree = vv.findViewById(R.id.icon_tree);
         }
     }
 }
