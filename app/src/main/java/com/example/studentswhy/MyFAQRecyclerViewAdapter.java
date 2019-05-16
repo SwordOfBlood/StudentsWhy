@@ -47,7 +47,7 @@ public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecycler
         DummyItem record = allRecords.get(i);
         String value = record.getValueText();
         int id = record.valueId;
-        int parentId = record.getParentId();
+        final int parentId = record.getParentId();
         final int position = i;
         final String text = "#" + id + ": " + value + " (id родительского элемента: " + parentId + ")";
 
@@ -55,7 +55,7 @@ public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecycler
         if (parentId > 0)
         {
             //видимость делаем по параметру родительского элемента
-            setVisibility(viewHolder.item, allRecords.get(parentId).isChildVisibility(), parentId);
+            setVisibility(viewHolder.item, record.isChildVisibility(), parentId);
         }
         else { //элемент не дочерний, показываем его
             setVisibility(viewHolder.item, true, parentId);
@@ -93,8 +93,10 @@ public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecycler
                     notifyDataSetChanged();
                 }
                 else { //нажали по обычному элементу, обрабатываем как нужно
-                    Snackbar snackbar = Snackbar.make(vv, text, Snackbar.LENGTH_LONG);
-                    snackbar.show();
+                    if (dataItem.getParentId() != 0){
+                        Snackbar snackbar = Snackbar.make(vv, text, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
                 }
             }
         });
@@ -109,7 +111,7 @@ public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecycler
         if (visible) {
             params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             if (vPadding != null) {
-                if (parentId >= 0) { //это дочерний элемент, делаем отступ
+                if (parentId > 0) { //это дочерний элемент, делаем отступ
                     vPadding.setPadding(80, 0, 0, 0);
                 }
                 else {

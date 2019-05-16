@@ -62,6 +62,7 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     int counter = 0;
     boolean alloweder = true;
+    boolean isChanged = false;
     public class NewThread extends AsyncTask<String, Void, String>
     {
         // благодоря этому классу мы будет разбирать данные на куски
@@ -154,7 +155,6 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                             else
                                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++)
                                 {
-
                                     NewsContent.ITEMS.get(i).setLikes(Integer.parseInt(dataSnapshot.child(Integer.toString(i+1)+"/Likes").getValue().toString()));
                                 }
                         }
@@ -175,14 +175,17 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             // This method is called once with the initial value and again
                             // whenever data at this location is updated.
-                            for (int i = 0; i < FAQContent.ITEMS.size(); i++)
-                            {
-                                if(FAQContent.ITEMS.get(i).details != 0)
-                                    FAQContent.ITEMS.get(i).setValueText(
+                            if (!isChanged){
+                                for (int i = 0; i < FAQContent.ITEMS.size(); i++)
+                                {
+                                    if(FAQContent.ITEMS.get(i).details != 0)
+                                        FAQContent.ITEMS.get(i).setValueText(
                                             FAQContent.ITEMS.get(i).getValueText()+"\n"+
                                             dataSnapshot.child(Integer.toString
                                                     (FAQContent.ITEMS.get(i).details))
                                                     .getValue().toString());
+                                }
+                                isChanged = true;
                             }
                         }
 
