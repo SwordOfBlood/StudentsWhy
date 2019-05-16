@@ -221,25 +221,27 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                                         else
                                             searchLink2+=FIO[j]+" ";
                                     }
-                                    if (dataSnapshot.hasChild(searchLink2+ "/person"))
-                                    {
-                                        if(!dataSnapshot.child(searchLink2 + "/person").getValue().toString().equals("-2"))
+                                    if (!searchLink2.contains(".")){
+                                        if (dataSnapshot.hasChild(searchLink2+ "/person"))
                                         {
-                                            do {
-                                                TeacherContent.ITEMS.get(i).getEmail();
-                                            } while(!alloweder);
-                                            alloweder = false;
-                                            new NewThread().execute(searchLink, Integer.toString(i),searchLink2);
+                                            if(!dataSnapshot.child(searchLink2 + "/person").getValue().toString().equals("-2"))
+                                            {
+                                                do {
+                                                    TeacherContent.ITEMS.get(i).getEmail();
+                                                } while(!alloweder);
+                                                alloweder = false;
+                                                new NewThread().execute(searchLink, Integer.toString(i),searchLink2);
 
+                                            }
+                                            TeacherContent.ITEMS.get(i).setNumber(
+                                                    dataSnapshot.child(searchLink2+"/chairGid").getValue().toString());
+                                            TeacherContent.ITEMS.get(i).setEmail(
+                                                    dataSnapshot.child(searchLink2+"/chairOid").getValue().toString());
+                                            TeacherContent.ITEMS.get(i).setPlace(
+                                                    dataSnapshot.child(searchLink2+"/lecturerGid").getValue().toString());
+                                            TeacherContent.ITEMS.get(i).setName(
+                                                    dataSnapshot.child(searchLink2+"/lecturerOid").getValue().toString());
                                         }
-                                        TeacherContent.ITEMS.get(i).setNumber(
-                                                dataSnapshot.child(searchLink2+"/chairGid").getValue().toString());
-                                        TeacherContent.ITEMS.get(i).setEmail(
-                                                dataSnapshot.child(searchLink2+"/chairOid").getValue().toString());
-                                        TeacherContent.ITEMS.get(i).setPlace(
-                                                dataSnapshot.child(searchLink2+"/lecturerGid").getValue().toString());
-                                        TeacherContent.ITEMS.get(i).setName(
-                                                dataSnapshot.child(searchLink2+"/lecturerOid").getValue().toString());
                                     }
                                 }
                             }
