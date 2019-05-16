@@ -22,6 +22,13 @@ public class News
     public int getLikes() {return likes;}
     public void setLikes(int likes) {this.likes = likes;}
 
+    private boolean isLiked = false;
+    public boolean getLiked(){return isLiked;}
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
     private UUID id;
     public UUID getId()
     {

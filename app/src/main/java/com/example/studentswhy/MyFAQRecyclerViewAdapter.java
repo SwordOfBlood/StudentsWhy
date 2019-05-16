@@ -52,7 +52,8 @@ public class MyFAQRecyclerViewAdapter extends RecyclerView.Adapter<MyFAQRecycler
         final String text = "#" + id + ": " + value + " (id родительского элемента: " + parentId + ")";
 
         //покажем или скроем элемент, если он дочерний
-        if (parentId > 0) {
+        if (parentId > 0)
+        {
             //видимость делаем по параметру родительского элемента
             setVisibility(viewHolder.item, allRecords.get(parentId).isChildVisibility(), parentId);
         }

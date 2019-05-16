@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -59,7 +60,6 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
     private TeacherFragment teacherFragment = new TeacherFragment();
     private LessonFragment lessonFragment = new LessonFragment();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-
     int counter = 0;
     boolean alloweder = true;
     public class NewThread extends AsyncTask<String, Void, String>
@@ -74,18 +74,19 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
             // класс который захватывает страницу
             Document doc;
             try {
+                DatabaseReference myRef2 = database.getReference("tutors/"+
+                        arg[2]);
                 // определяем откуда будем воровать данные
                 doc = Jsoup.connect(arg[0]).get();
                 // задаем с какого места
                 title = doc.select(".l-extra.small").first();
+
                 if(title != null)
-                   TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
-                           setNumber(title.text().replace(',',' '));
+                    myRef2.child("/chairGid").setValue(title.text().replace(',',' '));
                 if (!doc.select(".l-extra.small").isEmpty())
-                title = doc.select(".l-extra.small").last();
+                    title = doc.select(".l-extra.small").last();
                 if(title != null)
-                    TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
-                            setEmail(title.child(2).attr("data-at")
+                    myRef2.child("/chairOid").setValue(title.child(2).attr("data-at")
                                     .replaceAll("-at-","@")
                                     .replace("\"","")
                                     .replace("[","")
@@ -94,16 +95,18 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                 title = doc.select(".content__inner.content__inner_foot1").first();
                 if(title != null)
                 {
-                    TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
-                            setName(title.text());
-                    TeacherContent.ITEMS.get(Integer.parseInt(arg[1])).
-                            setPlace(title.getElementsByTag("a").attr("abs:href"));
+                    myRef2.child("/lecturerOid").setValue(title.text());
+                    myRef2.child("/lecturerGid").setValue(title.getElementsByTag("a").attr("abs:href"));
                 }
+                myRef2.child("person").setValue("-2");
                 alloweder = true;
 
-            } catch (IOException e)
+            } catch (Exception e)
             {
-
+                alloweder = true;
+            }
+            finally {
+                alloweder = true;
             }
             // ничего не возвращаем потому что я так захотел)
             return null;
@@ -151,6 +154,7 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                             else
                                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++)
                                 {
+
                                     NewsContent.ITEMS.get(i).setLikes(Integer.parseInt(dataSnapshot.child(Integer.toString(i+1)+"/Likes").getValue().toString()));
                                 }
                         }
@@ -198,20 +202,53 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
                     counter++;
                     if (TeacherContent.ITEMS.size() != 0 && TeacherContent.ITEMS.get(0).getNumber().equals(""))
                     {
-                        for(int i = 0; i<TeacherContent.ITEMS.size();i++)
-                        {
-                            String[] FIO = TeacherContent.ITEMS.get(i).getName().split(" ");
-                            String searchLink = "https://www.hse.ru/org/persons/?search_person=";
-                            for (int j = 1; j< FIO.length; j++)
-                            {
-                                searchLink+="+"+FIO[j];
+                        final DatabaseReference myRef3 = database.getReference("tutors");
+                        myRef3.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // This method is called once with the initial value and again
+                                // whenever data at this location is updated.
+                                for(int i = 0; i < TeacherContent.ITEMS.size();i++){
+                                    String[] FIO = TeacherContent.ITEMS.get(i).getName().split(" ");
+                                    String searchLink = "https://www.hse.ru/org/persons/?search_person=";
+                                    String searchLink2 = "";
+                                    for (int j = 1; j< FIO.length; j++)
+                                    {
+                                        if (!FIO[j].equals("-"))
+                                            searchLink+="+"+FIO[j];
+                                        if (j == FIO.length-1)
+                                            searchLink2+=FIO[j];
+                                        else
+                                            searchLink2+=FIO[j]+" ";
+                                    }
+                                    if (dataSnapshot.hasChild(searchLink2+ "/person"))
+                                    {
+                                        if(!dataSnapshot.child(searchLink2 + "/person").getValue().toString().equals("-2"))
+                                        {
+                                            do {
+                                                TeacherContent.ITEMS.get(i).getEmail();
+                                            } while(!alloweder);
+                                            alloweder = false;
+                                            new NewThread().execute(searchLink, Integer.toString(i),searchLink2);
+
+                                        }
+                                        TeacherContent.ITEMS.get(i).setNumber(
+                                                dataSnapshot.child(searchLink2+"/chairGid").getValue().toString());
+                                        TeacherContent.ITEMS.get(i).setEmail(
+                                                dataSnapshot.child(searchLink2+"/chairOid").getValue().toString());
+                                        TeacherContent.ITEMS.get(i).setPlace(
+                                                dataSnapshot.child(searchLink2+"/lecturerGid").getValue().toString());
+                                        TeacherContent.ITEMS.get(i).setName(
+                                                dataSnapshot.child(searchLink2+"/lecturerOid").getValue().toString());
+                                    }
+                                }
                             }
-                            do {
-                               TeacherContent.ITEMS.get(i).getEmail();
-                            } while(!alloweder);
-                            alloweder = false;
-                            new NewThread().execute(searchLink, Integer.toString(i));
-                        }
+
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+                                // Failed to read value
+                            }
+                        });
                     }
                     transaction.replace(R.id.homepage, teacherFragment);
                     transaction.commit();
@@ -238,6 +275,7 @@ public class MenuActivity extends AppCompatActivity implements SubjectFragment.O
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 

@@ -3,17 +3,21 @@ package com.example.studentswhy;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import com.example.studentswhy.NewsFragment.OnListFragmentInteractionListener;
-import com.example.studentswhy.dummy.NewsContent;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link News} and makes a call to the
@@ -21,9 +25,9 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecyclerViewAdapter.ViewHolder> {
-
     private final List<News> mValues;
     private final OnListFragmentInteractionListener mListener;
+
 
     public MyNewsRecyclerViewAdapter(List<News> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -56,12 +60,26 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-                    mValues.get(position).setLikes(mValues.get(position).getLikes()+1);
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("News/"+
-                            mValues.get(position).getHashtag()+"/Likes");
+                    if(!mValues.get(position).getLiked()){
+                        mValues.get(position).setLikes(mValues.get(position).getLikes()+1);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("News/"+
+                                mValues.get(position).getHashtag()+"/Likes");
 
-                    myRef.setValue(mValues.get(position).getLikes());
+                        mValues.get(position).setLiked(true);
+                        myRef.setValue(mValues.get(position).getLikes());
+                    }
+                    else
+                        {
+                            mValues.get(position).setLikes(mValues.get(position).getLikes()-1);
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef = database.getReference("News/"+
+                                    mValues.get(position).getHashtag()+"/Likes");
+
+                            mValues.get(position).setLiked(false);
+                            myRef.setValue(mValues.get(position).getLikes());
+                        }
+                    notifyDataSetChanged();
                 }
             }
         });
