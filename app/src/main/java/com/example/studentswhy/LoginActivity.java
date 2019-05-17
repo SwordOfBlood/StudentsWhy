@@ -319,6 +319,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onResponse(@NonNull Call<List<Lesson>> call, @NonNull Response<List<Lesson>> response)
             {
                 try{
+                    TeacherContent.ITEMS.clear();
+                    TeacherContent.ITEM_MAP.clear();
+                    SubjectContent.ITEMS.clear();
+                    SubjectContent.ITEM_MAP.clear();
                     for (int i = 0; i < response.body().size(); i++)
                     {
                         if (!TeacherContent.ITEM_MAP.containsKey(response.body().get(i).getLecturer()))

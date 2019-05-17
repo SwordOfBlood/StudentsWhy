@@ -77,7 +77,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                                     mValues.get(position).getHashtag()+"/Likes");
 
                             mValues.get(position).setLiked(false);
-                            myRef.setValue(mValues.get(position).getLikes());
+                            myRef.setValue(Integer.toString(mValues.get(position).getLikes()));
                         }
                     notifyDataSetChanged();
                 }
