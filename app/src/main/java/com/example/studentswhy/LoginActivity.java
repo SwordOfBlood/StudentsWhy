@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.studentswhy.dummy.FAQContent;
 import com.example.studentswhy.dummy.LessonContent;
 import com.example.studentswhy.dummy.SubjectContent;
 import com.example.studentswhy.dummy.TeacherContent;
@@ -94,9 +95,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
+        // Set up the login form
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+
+        FAQContent.ITEMS.clear();
+        FAQContent.ITEM_MAP.clear();
 
         final String email = "";
         sPref = getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -323,6 +327,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     TeacherContent.ITEM_MAP.clear();
                     SubjectContent.ITEMS.clear();
                     SubjectContent.ITEM_MAP.clear();
+
                     for (int i = 0; i < response.body().size(); i++)
                     {
                         if (!TeacherContent.ITEM_MAP.containsKey(response.body().get(i).getLecturer()))
